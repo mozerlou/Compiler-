@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BurrisCompile", "BurrisCompile\BurrisCompile.csproj", "{CE0AB7D6-0154-4D4E-8774-9E29950E1336}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EE9D1629-1B33-410E-BBDD-761C0574CFD7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CE0AB7D6-0154-4D4E-8774-9E29950E1336}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE0AB7D6-0154-4D4E-8774-9E29950E1336}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE0AB7D6-0154-4D4E-8774-9E29950E1336}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE0AB7D6-0154-4D4E-8774-9E29950E1336}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3CA8F3A2-E4C8-43B5-84F0-34166153D6FC}
+	EndGlobalSection
+EndGlobal
