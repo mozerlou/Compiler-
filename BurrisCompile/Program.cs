@@ -11,9 +11,16 @@ namespace BurrisCompile
         private int[,] FSA = new int[31, 18];
         static void Main(string[] args)
         {
-            String FSATableTextFile = "fsatext2.txt";
-            FSAScanner scanner = new FSAScanner(FSATableTextFile);
-            Console.WriteLine(scanner.ReadProgram);
+            String FSATokensFile = "fsatext1.txt";
+            String FSASymbolsFile = "fsatext2.txt";
+            FSAScanner scanner = new FSAScanner(FSATokensFile, FSASymbolsFile);
+            /*FSAScanner scanner = new FSAScanner(FSATokensFile, FSASymbolsFile);
+            String sc = scanner.ToString();
+            Console.WriteLine(sc);*/
+            //   Console.WriteLine(scanner.ToString());
+            scanner.mwamwa();
+           //scanner.ReadChar();
+            //Console.WriteLine(str);
         }
 
     }
