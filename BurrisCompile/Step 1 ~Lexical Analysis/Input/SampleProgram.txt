@@ -2,7 +2,7 @@ CLASS LargestCommonDenominator{
     CONST M = 7, N = 85;
     VAR X, Y, Z, Q, R;
 
-    PROCEDURE Food(){
+    PROCEDURE Chocolate(){
           VAR A, B;
        
           A = X;  B = Y;  Z = 0;
