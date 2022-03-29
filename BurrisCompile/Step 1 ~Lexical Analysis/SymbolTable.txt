@@ -1,0 +1,30 @@
+Token                         Class     Value  Address   Segment   
+LargestCommonDenominator      PGM NAME         0         DS        
+M                             CONST     7      0         CS        
+N                             CONST     85     2         CS        
+X                             VAR              4         CS        
+Y                             VAR              6         CS        
+Z                             VAR              8         CS        
+Q                             VAR              10        CS        
+R                             VAR              12        CS        
+Food                          PROCEDURE        2         DS        
+A                             VAR              14        CS        
+B                             VAR              16        CS        
+0                             NUMLIT    0      18        CS        
+0                             NUMLIT    0      20        CS        
+2                             NUMLIT    2      22        CS        
+2                             NUMLIT    2      24        CS        
+Divide                        PROCEDURE        4         DS        
+W                             VAR              26        CS        
+0                             NUMLIT    0      28        CS        
+2                             NUMLIT    2      30        CS        
+2                             NUMLIT    2      32        CS        
+2                             NUMLIT    2      34        CS        
+1                             NUMLIT    1      36        CS        
+GCD                           PROCEDURE        6         DS        
+F                             VAR              38        CS        
+G                             VAR              40        CS        
+25                            NUMLIT    25     42        CS        
+3                             NUMLIT    3      44        CS        
+84                            NUMLIT    84     46        CS        
+36                            NUMLIT    36     48        CS        

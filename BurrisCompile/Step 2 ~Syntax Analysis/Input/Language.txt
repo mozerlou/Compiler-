@@ -1,0 +1,48 @@
+<program> - CLASS  <ident>  {  <block>  }
+ <block>  -  <constantdefpart>   <variabledefpart>   <proceduredefpart>   <stmt> 
+ <constdefpart>   -   <empty>  
+ <constdefpart>   -  CONST  <constlist>  ;
+ <constlist>  - <constlist> ,   <ident>  =  <integer>  
+ <constlist>  - <ident>  =  <integer>  
+ <variabledefpart>   -   <empty>  
+ <variabledefpart>   -  VAR  <varlist>  ;
+ <varlist>  -   <varlist>  ,  <ident>  
+ <varlist>  -   <ident> 
+ <proceduredefpart>   -  PROCEDURE  <ident>  (  )  {  <block>  }
+ <proceduredefpart>   -  PROCEDURE  <ident>   <parmlist>  {  <block>  } 
+ <proceduredefpart>   -   <empty> 
+ <stmt>   -   <simplestmt>  
+ <stmt>   -   <callstmt>  
+ <stmt>   -   <compoundstmt>  
+ <stmt>   -   <ifstmt>  
+ <stmt>   -   <whilestmt>                  
+ <stmt>   -   <stmtlist>  
+ <stmt>   -   <empty> 
+ <simplestmt>   -   <ident>  =  <exp> 
+ <callstmt>   -   CALL  <ident>  (  ) 
+ <callstmt>   -   CALL  <ident>   <parmlist> 
+ <parmlist>   -  (  <identlist>  )
+ <identlist>   -  <identlist>  ,  <ident>  
+ <identlist>   -   <ident> 
+ <compoundstmt>   -   {  <stmtlist>  }
+ <stmtlist>   -   <stmtlist>  ;  <stmt>  
+ <stmtlist>   -   <stmt> 
+ <ifstmt>   -  IF   <b.e.>  THEN  <stmt> 
+ <whilestmt>   -  WHILE  <b.e.>  DO  <stmt> 
+ <b.e.>   -  ODD  <exp>  
+ <b.e.>   -   <exp>  ==  <exp> 
+ <b.e.>   -   <exp>  != <exp> 
+ <b.e.>   -   <exp>  >  <exp> 
+ <b.e.>   - <exp> <  <exp> 
+ <b.e.> - <exp>  >= <exp> 
+ <b.e.> - <exp> <=  <exp>  
+<exp>  - +  <term>  
+<exp>  -  -  <term> 
+  <exp>  - <exp> + <term> 
+ <exp>  - <exp> - <term> 
+ <term>  - <fac> 
+ <term>  - <term>  *  <fac>  
+<term>  - <term>  /  <fac>  
+<fac>  - <ident> 
+ <fac>  -  <integer> 
+ <fac>  -  (  <exp> )
