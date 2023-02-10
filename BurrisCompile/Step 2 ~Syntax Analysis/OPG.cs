@@ -1,8 +1,12 @@
 ﻿namespace BurrisCompile
 {
-    //this class will build the precedence relation table using (<) = (=)(FIRST*)(FIRSTTERM), (>)=((LAST*)(LASTTERM))T(=)
-    //it will do so using language.txt, which contains the grammar rules used by our language
+    //this class will build the precedence relation table if it has not been built before or the language has been modified
+    //it will do so using the formula: (<) = (=)(FIRST*)(FIRSTTERM), (>)=((LAST*)(LASTTERM))T(=)
+    //in combination with language.txt, which contains the grammar rules used by our language
     //output table is written in OPGTable.txt {refer to pg}
+
+    //need to update txt file only if data has been modified
+    //can be done by comparing file hash 
 
     internal class OPG
     {
@@ -19,6 +23,70 @@
             createTokenList();
             createOperatorList();
             PrintTable();
+            PrintAllTables();
+        }
+
+     
+
+        private void PrintAllTables()
+        {
+            using StreamWriter sw = new StreamWriter("TableProof.txt");
+            sw.WriteLine("Table Proof\n");
+
+            sw.WriteLine("First Term: \n");
+            sw.WriteLine(PrintTable(FirstTerm(), 1));
+
+
+            sw.WriteLine("Last Term: \n");
+            sw.WriteLine(PrintTable(LastTerm(), 1));
+
+            sw.WriteLine("Equal Term: \n");
+            sw.WriteLine(PrintTable(EqualOpTerm(), 1));
+
+
+            sw.WriteLine("First: \n");
+            sw.WriteLine(PrintTable(First(),1));
+
+
+            sw.WriteLine("First Plus: \n");
+            sw.WriteLine(PrintTable(Warshalls(First()), 1));
+
+
+            sw.WriteLine("First * : \n");
+            sw.WriteLine(PrintTable(OnePlusTable(Warshalls(First())), 1));
+
+
+            sw.WriteLine("Last: \n");
+            sw.WriteLine(PrintTable(Last(), 1));
+
+
+            sw.WriteLine("Last Plus: \n");
+            sw.WriteLine(PrintTable(Warshalls(Last()), 1));
+
+
+            sw.WriteLine("Last * : \n");
+            sw.WriteLine(PrintTable(OnePlusTable(Warshalls(Last())), 1));
+            sw.Close();
+        }
+
+        //prints the table
+        public String PrintTable(int[,] x, int o)
+        {
+            string str = "";
+            int size=0;
+
+            if (o==0)  size = OperatorsArr.Length;
+            if (o==1)  size = TokensArr.Length;
+
+            for (int i = 0; i < size; i++)
+            {
+                for (int j = 0; j < size; j++)
+                {
+                    str += x[i, j] + " ";
+                }
+                str += "\n";
+            }
+            return str;
         }
 
         //populates OperatorsArr array with all operators used in the grammar
@@ -26,7 +94,7 @@
         /* an operator will be any word that is not surrounded by <>
         they must also be seperated by whitespace (no () it must be ( ) )
         no seperate line for operators ie.<addop> - + | -; 
-        it must be seperated in the textfile itself beforehand */       
+        it must be seperated in the textfile itself beforehand */
         private void createOperatorList()
         {
             List<string> OpList = new List<string>();
@@ -141,13 +209,9 @@
                                     break;
                                 }
                             }
-                            if (found == true)
-                            {
-                                break;
-                            }
+                            if (found == true) break;                            
                         }
                     }
-
                     found = false;
                 }
             }
@@ -203,10 +267,7 @@
                                     break;
                                 }
                             }
-                            if (found == true)
-                            {
-                                break;
-                            }
+                            if (found == true) break;                            
                         }
                     }
 
@@ -487,9 +548,44 @@
             }
             return ret;
         }
+        //output table is written in OPGTable.txt {refer to pg} in appropriate formatting 
+        private void PrintTable()
+        {
+            string file = System.IO.Path.GetFullPath(Directory.GetCurrentDirectory() + @"\OPGTable.txt");
+            using StreamWriter sw = new StreamWriter(file);
+            string[,] op = OPGTableCreates();
+            string opprec = "";
 
+            int size2 = OperatorsArr.Length;
+            int fsize;
+
+            //extra space for formating
+            opprec += string.Format("{0,-7}", " ");
+            //first row of tokens
+            for (int i = 0; i < size2; i++)
+            {
+                fsize = OperatorsArr[i].Length + 2;
+                opprec += string.Format("{0," + $"{fsize}" + "}", OperatorsArr[i]);
+            }
+
+            opprec += "\n";
+            for (int i = 0; i < size2; i++)
+            {
+                //first col of tokens
+                opprec += string.Format("{0,-7}", OperatorsArr[i]);
+                //info inside array
+                for (int j = 0; j < size2; j++)
+                {
+                    fsize = OperatorsArr[j].Length + 2;
+                    opprec += string.Format("{0," + $"{fsize}" + "}", op[i, j]);
+                }
+                opprec += "\n";
+            }
+            //out
+            sw.WriteLine("Operator Precedence Table:\n" + opprec);
+        }
         //outputs the OPG Table in question in the form of a string array 
-        private string[,] OPGTableCreates()
+        public string[,] OPGTableCreates()
         {
             // (<) = (=)(FIRST*)(FIRSTTERM), (>)=((LAST*)(LASTTERM))T(=)
             int[,] yields = BooleanProd(BooleanProd(Equal(), OnePlusTable(Warshalls(First()))), FirstTerm());
@@ -540,7 +636,17 @@
                                 col = k;
                             }
                         }
-                        ret2[row, col] = "<";
+                        // if (TokensArr[j]== ";" || TokensArr[j] == "}")
+                        if (TokensArr[j] == ";" || TokensArr[j] == ")")
+                        {
+                            ret2[row, col] = ">";
+                        }
+                        else
+
+                        {
+                            ret2[row, col] = "<";
+                        }
+                       
                     }
                     if (equ[i, j] == 1)
                     {
@@ -573,41 +679,105 @@
             return ret2;
         }
 
-        //output table is written in OPGTable.txt {refer to pg} in appropriate formatting 
-        private void PrintTable()
+
+
+
+        //reads OPG table from text files and returns it as a string array equivalent
+        public  string[,] ReadOPGTableTXT()
         {
-            string file = System.IO.Path.GetFullPath(Directory.GetCurrentDirectory() + @"\OPGTable.txt");
-            using StreamWriter sw = new StreamWriter(file);
-            string[,] op = OPGTableCreates();
-            string opprec = "";
+            int size = DetermineTableSize()+1;
+            string[,] OPG = new string[size, size];
 
-            int size2 = OperatorsArr.Length;
-            int fsize;
+            string fileName = System.IO.Path.GetFullPath(Directory.GetCurrentDirectory() + @"\OPGTable.txt");
 
-            //extra space for formating
-            opprec += string.Format("{0,-7}", " ");
-            //first row of tokens
-            for (int i = 0; i < size2; i++)
+            using (StreamReader sr = File.OpenText(fileName))
             {
-                fsize = OperatorsArr[i].Length + 2;
-                opprec += string.Format("{0," + $"{fsize}" + "}", OperatorsArr[i]);
-            }
+                //reads second line
+                string text = sr.ReadLine();
+                       text = sr.ReadLine();
+                //whats going to seperate strings in our text file, aka all  whitespace
+                string[] stringSeparators = new string[] { "\n", "\t", " " };
+                string[] lines;
 
-            opprec += "\n";
-            for (int i = 0; i < size2; i++)
-            {
-                //first col of tokens
-                opprec += string.Format("{0,-7}", OperatorsArr[i]);
-                //info inside array
-                for (int j = 0; j < size2; j++)
+            
+                for (int i = 1; i < size; i++)
                 {
-                    fsize = OperatorsArr[j].Length + 2;
-                    opprec += string.Format("{0," + $"{fsize}" + "}", op[i, j]);
-                }
-                opprec += "\n";
+                    text = sr.ReadLine();
+                    lines = text.Trim().Split(stringSeparators, StringSplitOptions.RemoveEmptyEntries);
+                   
+                    for (int j = 1; j < size; j++)
+                    {
+                       
+                            OPG[i, j] = lines[j];
+                      
+                    }
+                }            
+
             }
-            //out
-            sw.WriteLine("Operator Precedence Table:\n" + opprec);
+         
+            return OPG;
         }
+
+        //this method will compare two given operators and return the corresponding OPG table cell
+        //operator one will represent the row (previous input), operator 2 will represent the collumn (current input)
+        public string FindOPGCell(string op1, string op2)
+        {
+            string cell;
+            string[,] opg = ReadOPGTableTXT();
+            int row = DetermineOPIndex(op1)+1;
+            int col = DetermineOPIndex(op2)+1;
+          
+            //-1 represents a mismath in DetermineOPIndex
+            if (row != -1 & col != -1) return opg[row, col];
+
+           
+            else return null;
+        }
+
+        //determines the row or collumn an operator will be in used in the push down automata
+        //first it will determine if the TokensArr has already been built ( this only occurrs if there has been a modification to the language text file or if the OPGTable has not been built yet)
+        //then return index appropriately
+        public int DetermineOPIndex(string op)
+        {
+            int size = DetermineTableSize();
+           // DetermineTokens();
+            int index = 0;
+            for (int i = 0; i < size; i++)
+            {
+                if (op == OperatorsArr[i]) return i;
+            }
+
+            return -1;
+        }
+
+        //determines the OPG Table size & fills OperatorArr if it was empty  
+        //first it will determine if OperatorsArr has already been built
+        //( it would have only been built if there has been a modification to the language text file or if the OPGTable has not been built yet)
+        //then either determine size based on OperatorsArr length or read OPGTable.txt
+        private int DetermineTableSize()
+        {
+            int size;
+            if (OperatorsArr == null)
+            {
+                string file = System.IO.Path.GetFullPath(Directory.GetCurrentDirectory() + @"\OPGTable.txt");
+                using (StreamReader sr = File.OpenText(file))
+                {
+                    //Reads second line
+                    string text = sr.ReadLine();
+                    text = sr.ReadLine();                    
+
+                    //whats going to seperate strings in our text file, aka all  whitespace
+                    string[] stringSeparators = new string[] { "\n", "\t", " " };
+                    //determines col length
+                    OperatorsArr = text.Split(stringSeparators, StringSplitOptions.RemoveEmptyEntries);
+                    size = OperatorsArr.Length;
+                }
+            }
+            else size = OperatorsArr.Length;
+            
+            return size;    
+        }
+
+        
     }
 }

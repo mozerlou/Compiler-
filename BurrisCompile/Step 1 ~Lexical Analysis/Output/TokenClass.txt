@@ -23,7 +23,7 @@ Q		var
 R		var
 ;		semi
 PROCEDURE		$PROCEDURE
-Multiply		var
+Food		var
 (		LP
 )		RP
 {		LB
@@ -133,7 +133,7 @@ THEN		$CONST
 R		var
 =		assign
 R		var
-error occured here
+-		sop
 W		var
 ;		semi
 Q		var
@@ -176,7 +176,7 @@ THEN		$CONST
 G		var
 =		assign
 G		var
-error occured here
+-		sop
 F		var
 ;		semi
 IF		$IF
@@ -187,7 +187,7 @@ THEN		$CONST
 F		var
 =		assign
 F		var
-error occured here
+-		sop
 G		var
 ;		semi
 }		RB
